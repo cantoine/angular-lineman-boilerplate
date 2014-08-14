@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "actionhero": "latest",
+    "jaydata": "latest",
     "mongoose": "latest",
     "mongoose-utilities": "latest",
     "mongoose-validator": "latest",

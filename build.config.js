@@ -57,7 +57,9 @@ module.exports = {
     },
     vendor_files: {
         js: [
-            'vendor/angular/angular.js'
+            'vendor/jaydata/release/jaydata.js',
+            'vendor/angular/angular.js',
+            'vendor/jaydata/JayDataModules/angular.js'
         ],
         /** This can be LESS or just reg CSS files **/
         less: [
