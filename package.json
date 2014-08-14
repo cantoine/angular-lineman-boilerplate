@@ -1,6 +1,6 @@
 {
   "name": "boilerplate",
-  "title": "A Boilerplate for use with Angular and Action Hereo based on ng-boilerplate",
+  "title": "A Boilerplate for use with Angular and Action Hero based on ng-boilerplate",
   "version": "0.0.1",
   "private": true,
   "licenses": {
@@ -31,18 +31,16 @@
     "grunt-contrib-copy": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-less": "latest",
-    "grunt-contrib-testem": "latest",
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-debug-task": "latest",
-    "grunt-mocha-test": "~0.8.2",
-    "grunt-ngmin": "latest",
+    "grunt-karma": "latest",
+    "grunt-ng-annotate": "latest",
     "grunt-protractor-runner": "latest",
     "mocha": "latest",
     "protractor": "latest",
     "request": "latest",
     "should": "latest",
-    "sinon": "latest",
-    "testem": "latest"
+    "sinon": "latest"
   }
 }

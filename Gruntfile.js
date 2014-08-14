@@ -15,12 +15,10 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-protractor-runner');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-debug-task');
-
-    // Load custom tasks for Action Hero
-    grunt.loadTasks('./tasks/');
 
     var userConfig = require( './build.config.js' );
 
@@ -329,47 +327,6 @@ module.exports = function( grunt ) {
                 }
             }
         },
-        testem: {
-            dev: {
-                options: {
-                    serve_files: grunt.util._.union( userConfig.test_files.client.app, userConfig.test_files.client.spec).map(function(path){ return '<%= build_dir %>/' + path; }),
-                    watch_files: [ '<%= build_dir %>/**/*.*', 'server/*.*' ],
-                    launchers: {
-                        "API Unit": {
-                            command: 'grunt mochaTest:spec',
-                            protocol: "tap"
-                        },
-                        "API Integration": {
-                            command: 'grunt mochaTest:e2e',
-                            protocol: "tap"
-                        }
-                    },
-                    parallel: 8,
-                    launch_in_dev: [ 'Chrome', 'API Unit', 'API Integration']
-                }
-            },
-            production: {
-                src: [
-                    '<%= concat.compile_js.dest %>',
-                    '<%= concat.compile_spec.dest %>'
-                ],
-                options: {
-                    serve_files: grunt.util._.union( userConfig.test_files.client.app, userConfig.test_files.client.spec),
-                    parallel: 8,
-                    launchers: {
-                        "API Unit": {
-                            command: 'grunt mochaTest:spec',
-                            protocol: "tap"
-                        },
-                        "API Integration": {
-                            command: 'grunt mochaTest:e2e',
-                            protocol: "tap"
-                        }
-                    },
-                    launch_in_ci: [ 'Chrome', 'API Unit', 'API Integration' ]
-                }
-            }
-        },
         uglify: {
             compile: {
                 options: {
@@ -395,14 +352,9 @@ module.exports = function( grunt ) {
         'clean', 'jshint:app', 'less:production', 'concat:compile_js', 'uglify', 'index:compile'
     ]);
 
-    grunt.registerTask( 'test-watch', [ 'copy:build_spec', 'testem:run:dev' ]);
+    grunt.registerTask( 'test-watch', [ 'copy:build_spec' ]);
 
-    grunt.registerTask( 'server-spec', [ 'mochaTest:spec' ]);
-    grunt.registerTask( 'server-e2e', [ 'mochaTest:e2e' ]);
-
-    grunt.registerTask( 'test-server', [ 'mochaTest:spec', 'mochaTest:e2e' ]);
-    grunt.registerTask( 'test-client', [ 'compile', 'testem:ci:production', 'protractor:test' ]);
-    grunt.registerTask( 'test-application', [ 'test-client', 'test-server'  ]);
+    grunt.registerTask( 'test', [ 'compile', 'protractor:test' ]);
 
     /**
     * A utility function to get all app JavaScript sources.
