@@ -43,7 +43,7 @@ module.exports = function( grunt ) {
                 dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
             },
             compile_spec: {
-                src: '<%= test_files.client.spec %>',
+                src: '<%= test_files.spec %>',
                 dest: '<%= compile_dir %>/spec.js'
             }
         },
@@ -101,7 +101,7 @@ module.exports = function( grunt ) {
             build_spec: {
                 files: [
                     {
-                        src: [ '<%= test_files.client.spec %>' ],
+                        src: [ '<%= test_files.spec %>' ],
                         dest: '<%= build_dir %>',
                         cwd: '.',
                         expand: true
@@ -116,7 +116,7 @@ module.exports = function( grunt ) {
             */
             gruntfile: {
                 files: [ 'Gruntfile.js', 'build.config.js' ],
-                tasks: [ 'jshint:gruntfile', 'build' ],
+                tasks: [ 'jshint:gruntfile' ],
                 options: {
                     livereload: false
                 }
@@ -128,7 +128,7 @@ module.exports = function( grunt ) {
             */
             jssrc: {
                 files: '<%= app_files.js %>',
-                tasks: [ 'jshint:app', 'copy:build_appjs' ]
+                tasks: [ 'jshint:app', 'copy:build_appjs', 'karma:unit:run' ]
             },
 
             manifest: {
@@ -155,7 +155,7 @@ module.exports = function( grunt ) {
 
             ngtemplates: {
                 files: '<%= app_files.templates %>',
-                tasks: [ 'ngtemplates' ]
+                tasks: [ 'ngtemplates', 'karma:unit:run' ]
             },
 
             /**
@@ -163,12 +163,17 @@ module.exports = function( grunt ) {
             */
             less: {
                 files: [ 'src/**/*.less' ],
-                tasks: [ 'less:development' ]
+                tasks: [ 'less:development', 'karma:unit:run' ]
             },
 
             spec: {
-                files: [ '<%= test_files.client.spec %>' ],
-                tasks: [ 'copy:build_spec' ]
+                files: [ '<%= test_files.spec %>' ],
+                tasks: [ 'copy:build_spec', 'karma:unit:run' ]
+            },
+
+            karmaconfig: {
+                files: [ 'karma.conf.js' ],
+                tasks: [ 'karma:unit:run' ]
             }
         },
         index: {
@@ -261,8 +266,7 @@ module.exports = function( grunt ) {
         },
         karma: {
             options: {
-                browsers: [ 'PhantomJS' ],
-                //conf: 'karma.conf.js',
+                configFile: 'karma.conf.js',
                 files: [
                     userConfig.test_files.mocks,
                     userConfig.vendor_files.js,
@@ -270,15 +274,11 @@ module.exports = function( grunt ) {
                     '<%= ngconstant.production.options.dest %>',
                     '<%= ngtemplates.dev.dest %>',
                     userConfig.test_files.spec
-                ],
-                frameworks: [ 'mocha', 'chai' ],
-                logLevel: 'ERROR',
-                reporters: [ 'progress' ]
+                ]
             },
             unit: {
                 browsers: [ 'Chrome' ],
-                //background: true,
-                //singleRun: true
+                background: true
             },
             ci: {
                 browsers: [ 'Chrome' ],
@@ -305,7 +305,7 @@ module.exports = function( grunt ) {
                     dest: '<%= build_dir %>/constants.js',
                 },
                 constants: {
-                    'API_HOST': '107.170.30.34',
+                    'API_HOST': 'XXX.XXX.XXX.XXX',
                     'ENV': 'production'
                 }
             }
@@ -355,7 +355,7 @@ module.exports = function( grunt ) {
     grunt.initConfig( grunt.util._.extend( taskConfig, userConfig ) );
 
     grunt.renameTask( 'watch', 'delta' );
-    grunt.registerTask( 'watch', [ 'build', 'delta' ] );
+    grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
     grunt.registerTask( 'default', [ 'build', 'compile' ] );
     grunt.registerTask( 'build', [
         'clean', 'ngtemplates:dev', 'jshint', 'less:development', 'copy:build_app_assets', 'copy:build_appjs', 

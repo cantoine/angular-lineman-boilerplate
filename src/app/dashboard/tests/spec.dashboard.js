@@ -21,6 +21,7 @@ describe('Home module', function() {
 
         describe('when we do something', function() {
             it('it should display nothing', function() {
+                console.log('TEST');
                 //expect(true).toEqual(true);
             });
             
