@@ -24,6 +24,7 @@
     "q": "latest"
   },
   "devDependencies": {
+    "chai": "^1.9.1",
     "grunt": "latest",
     "grunt-angular-templates": "latest",
     "grunt-contrib-clean": "latest",
@@ -36,7 +37,12 @@
     "grunt-debug-task": "latest",
     "grunt-karma": "latest",
     "grunt-ng-annotate": "latest",
+    "grunt-ng-constant": "^1.0.0",
     "grunt-protractor-runner": "latest",
+    "karma": "^0.12.21",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.7",
     "mocha": "latest",
     "protractor": "latest",
     "request": "latest",

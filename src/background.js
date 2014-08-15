@@ -1,4 +1,5 @@
-/*chrome.app.runtime.onLaunched.addListener(function() {
+/* This is for Chrome Packaged Apps
+chrome.app.runtime.onLaunched.addListener(function() {
     chrome.app.window.create('index.html', {
         bounds: {
             width: 800,

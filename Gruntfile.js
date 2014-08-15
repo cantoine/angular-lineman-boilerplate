@@ -18,6 +18,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ng-annotate');
+    grunt.loadNpmTasks('grunt-ng-constant');
     grunt.loadNpmTasks('grunt-debug-task');
 
     var userConfig = require( './build.config.js' );
@@ -174,17 +175,19 @@ module.exports = function( grunt ) {
             build: {
                 dir: '<%= build_dir %>',
                 src: [
+                    '<%= copy.build_app_assets.files[0].dest %>/*.js',
                     '<%= vendor_files.js %>',
                     '<%= build_dir %>/src/**/*.js',
-                    '<%= build_dir %>/assets/*.css',
-                    '<%= ngtemplates.build.dest %>',
+                    '<%= ngconstant.dev.options.dest %>',
+                    '<%= build_dir %>/assets/app-<%= pkg.version %>.css',
+                    '<%= ngtemplates.dev.dest %>'
                 ]
             },
             compile: {
                 dir: '<%= compile_dir %>',
                 src: [
                     '<%= concat.compile_js.dest %>',
-                    '<%= less.production.files[0].dest %>'
+                    '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
                 ]
             }
         },
@@ -256,74 +259,84 @@ module.exports = function( grunt ) {
                 ' * Licensed <%= pkg.licenses.type %> <<%= pkg.licenses.url %>>\n' +
                 ' */\n'
         },
-        mochaTest: {
-            spec: {
-                options: {
-                    reporter: 'tap'
-                },
-                src: '<%= test_files.server.spec %>'
-            },
-            e2e: {
-                options: {
-                    reporter: 'tap'
-                },
-                src: '<%= test_files.server.e2e %>'
-            }
-        },
-        protractor: {
+        karma: {
             options: {
-                configFile: 'node_modules/protractor/referenceConf.js',
-                keepAlive: true,
-                chromeOnly: false,
-                args: {
-                }
+                browsers: [ 'PhantomJS' ],
+                //conf: 'karma.conf.js',
+                files: [
+                    userConfig.test_files.mocks,
+                    userConfig.vendor_files.js,
+                    userConfig.app_files.js,
+                    '<%= ngconstant.production.options.dest %>',
+                    '<%= ngtemplates.dev.dest %>',
+                    userConfig.test_files.spec
+                ],
+                frameworks: [ 'mocha', 'chai' ],
+                logLevel: 'ERROR',
+                reporters: [ 'progress' ]
             },
-            development: {
-                options: {
-                    args: {
-                        baseUrl: 'http://localhost:9090',
-                        seleniumAddress: 'http://localhost:4444/wd/hub',
-                        specs: '<%= test_files.client.e2e %>',
-                        browser: 'chrome',
-                        verbose: true
-                    }
-                }
+            unit: {
+                browsers: [ 'Chrome' ],
+                //background: true,
+                //singleRun: true
             },
             ci: {
-                options: {
-                    args: {
-                        seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
-                        specs: '<%= test_files.client.e2e %>',
-                        browser: 'chrome'
-                    }
-                }
+                browsers: [ 'Chrome' ],
+                singleRun: true
             }
         },
-        ngmin: {
-            compile: {
-                files: [
-                    {
-                        src: [ '<%= app_files.js %>' ],
-                        cwd: '<%= compile_dir %>',
-                        dest: '<%= compile_dir %>',
-                        expand: true
-                    }
-                ]
+        ngconstant: {
+            options: {
+                name: '<%= pkg.name %>',
+                deps: false
+            },
+            dev: {
+                options: {
+                    dest: '<%= build_dir %>/constants.js',
+                },
+                constants: {
+                    //'API_HOST': '192.168.1.114'
+                    'API_HOST': '127.0.0.1',
+                    'ENV': 'development'
+                }
+            },
+            production: {
+                options: {
+                    dest: '<%= build_dir %>/constants.js',
+                },
+                constants: {
+                    'API_HOST': '107.170.30.34',
+                    'ENV': 'production'
+                }
             }
         },
         ngtemplates: {
-            build: {
+            dev: {
                 src: '<%= app_files.templates %>',
                 dest: '<%= build_dir %>/src/templates.js',
+                cwd: 'src/app',
                 options: {
-                    module: '<%= pkg.name %>'
+                    standalone: true,
+                    module: 'templates',
+                    htmlmin:{
+                        removeComments:true,
+                        collapseWhitespace: true,
+                        collapseBooleanAttributes: true
+                    }
                 }
             },
-            compile: {
+            production: {
                 src: '<%= app_files.templates %>',
-                dest: '<%= compile_dir %>/src/templates.js',
+                dest: '<%= build_dir %>/src/templates.js',
+                cwd: 'src/app',
                 options: {
-                    module: '<%= pkg.name %>'
+                    standalone: true,
+                    module: 'templates',
+                    htmlmin: {
+                        removeComments:true,
+                        collapseWhitespace: true,
+                        collapseBooleanAttributes: true
+                    }
                 }
             }
         },
@@ -345,11 +358,13 @@ module.exports = function( grunt ) {
     grunt.registerTask( 'watch', [ 'build', 'delta' ] );
     grunt.registerTask( 'default', [ 'build', 'compile' ] );
     grunt.registerTask( 'build', [
-        'clean', 'ngtemplates:build', 'jshint', 'less:development', 'copy:build_app_assets', 'copy:build_appjs', 
-        'copy:build_vendor_assets', 'copy:build_vendorjs', 'copy:build_manifest', 'index:build'
+        'clean', 'ngtemplates:dev', 'jshint', 'less:development', 'copy:build_app_assets', 'copy:build_appjs', 
+        'copy:build_vendor_assets', 'copy:build_vendorjs', 'index:build', 'ngconstant:dev' //, 'build-manifest'
     ]);
+    // This is for Chrome Packaged Apps
+    //grunt.registerTask( 'build-manifest', [ 'copy:build_manifest' ]);
     grunt.registerTask( 'compile', [
-        'clean', 'jshint:app', 'less:production', 'concat:compile_js', 'uglify', 'index:compile'
+        'clean', 'jshint:app', 'ngconstant:production', 'less:production', 'concat:compile_js', 'uglify', 'index:compile', 'ngconstant:production'
     ]);
 
     grunt.registerTask( 'test-watch', [ 'copy:build_spec' ]);
