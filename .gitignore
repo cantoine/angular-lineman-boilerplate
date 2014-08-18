@@ -14,3 +14,4 @@ bin/
 node_modules/
 vendor/
 coverage/
+src/constants.js
