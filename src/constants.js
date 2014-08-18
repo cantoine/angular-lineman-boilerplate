@@ -1,7 +1,7 @@
 angular.module('boilerplate')
 
-.constant('API_HOST', '127.0.0.1')
+.constant('API_HOST', 'X.X.X.X')
 
-.constant('ENV', 'development')
+.constant('ENV', 'production')
 
 ;
