@@ -9,14 +9,14 @@ Install Node.js and then:
 ```sh
 $ git clone git://github.com/cantoine/boilerplate
 $ cd boilerplate
-$ sudo npm -g install grunt-cli bower
+$ npm -g install grunt-cli bower
 $ npm install
 $ bower install
-$ grunt watch
 ```
-# Unit tests
-```sh
-$ grunt test-watch
+
+```
+# Grunt Watch -- This will build the app and run unit tests where applicable
+$ grunt watch
 ```
 
 # E2E tests need some work before they are fully functional.

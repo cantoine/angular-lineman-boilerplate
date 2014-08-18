@@ -11,14 +11,13 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-testem');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-ng-constant');
+    grunt.loadNpmTasks('grunt-selenium-webdriver');
     grunt.loadNpmTasks('grunt-debug-task');
 
     var userConfig = require( './build.config.js' );
@@ -27,7 +26,8 @@ module.exports = function( grunt ) {
         pkg: grunt.file.readJSON('package.json'),
         clean: [
           '<%= build_dir %>',
-          '<%= compile_dir %>'
+          '<%= compile_dir %>',
+          'coverage'
         ],
         concat: {
             compile_js: {
@@ -37,14 +37,11 @@ module.exports = function( grunt ) {
                 src: [
                     '<%= vendor_files.js %>',
                     'module.prefix',
+                    '<%=ngconstant.production.options.dest %>',
                     '<%= app_files.js %>',
                     'module.suffix'
                 ],
                 dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
-            },
-            compile_spec: {
-                src: '<%= test_files.spec %>',
-                dest: '<%= compile_dir %>/spec.js'
             }
         },
         copy: {
@@ -97,7 +94,7 @@ module.exports = function( grunt ) {
                         expand: true
                     }
                 ]
-            },
+            }/*,
             build_spec: {
                 files: [
                     {
@@ -107,7 +104,7 @@ module.exports = function( grunt ) {
                         expand: true
                     }
                 ]
-            },
+            },*/
         },
         delta: {
             /**
@@ -168,7 +165,7 @@ module.exports = function( grunt ) {
 
             spec: {
                 files: [ '<%= test_files.spec %>' ],
-                tasks: [ 'copy:build_spec', 'karma:unit:run' ]
+                tasks: [ /*'copy:build_spec',*/ 'karma:unit:run' ]
             },
 
             karmaconfig: {
@@ -183,7 +180,6 @@ module.exports = function( grunt ) {
                     '<%= copy.build_app_assets.files[0].dest %>/*.js',
                     '<%= vendor_files.js %>',
                     '<%= build_dir %>/src/**/*.js',
-                    '<%= ngconstant.dev.options.dest %>',
                     '<%= build_dir %>/assets/app-<%= pkg.version %>.css',
                     '<%= ngtemplates.dev.dest %>'
                 ]
@@ -281,6 +277,7 @@ module.exports = function( grunt ) {
                 background: true
             },
             ci: {
+                autoWatch: false,
                 browsers: [ 'Chrome' ],
                 singleRun: true
             }
@@ -292,20 +289,19 @@ module.exports = function( grunt ) {
             },
             dev: {
                 options: {
-                    dest: '<%= build_dir %>/constants.js',
+                    dest: 'src/constants.js',
                 },
                 constants: {
-                    //'API_HOST': '192.168.1.114'
                     'API_HOST': '127.0.0.1',
                     'ENV': 'development'
                 }
             },
             production: {
                 options: {
-                    dest: '<%= build_dir %>/constants.js',
+                    dest: 'src/constants.js',
                 },
                 constants: {
-                    'API_HOST': 'XXX.XXX.XXX.XXX',
+                    'API_HOST': 'X.X.X.X',
                     'ENV': 'production'
                 }
             }
@@ -340,6 +336,43 @@ module.exports = function( grunt ) {
                 }
             }
         },
+        protractor: {
+            options: {
+                configFile: 'node_modules/protractor/example/conf.js',
+                keepAlive: true,
+                chromeOnly: false,
+                args: {
+                }
+            },
+            development: {
+                options: {
+                    args: {
+                        baseUrl: 'http://127.0.0.1:9000/',
+                        seleniumAddress: 'http://localhost:4444/wd/hub',
+                        specs: '<%= test_files.e2e %>',
+                        browser: 'chrome',
+                        verbose: true
+                    }
+                }
+            },
+            ci: {
+                options: {
+                    args: {
+                        specs: '<%= test_files.e2e %>',
+                        browser: 'chrome'
+                    }
+                }
+            }
+        },
+        selenium_start: {
+            options: {}
+        },
+        selenium_phantom_hub: {
+            options: {}
+        },
+        selenium_stop: {
+            options: {}
+        },
         uglify: {
             compile: {
                 options: {
@@ -364,12 +397,13 @@ module.exports = function( grunt ) {
     // This is for Chrome Packaged Apps
     //grunt.registerTask( 'build-manifest', [ 'copy:build_manifest' ]);
     grunt.registerTask( 'compile', [
-        'clean', 'jshint:app', 'ngconstant:production', 'less:production', 'concat:compile_js', 'uglify', 'index:compile', 'ngconstant:production'
+        'clean', 'jshint:app', 'ngconstant:production', 'less:production', 'concat:compile_js', /*'uglify',*/ 'index:compile'
     ]);
 
-    grunt.registerTask( 'test-watch', [ 'copy:build_spec' ]);
+    grunt.registerTask( 'test', [ 'compile', 'karma:ci' ]);
 
-    grunt.registerTask( 'test', [ 'compile', 'protractor:test' ]);
+    // Still a WIP
+    //grunt.registerTask( 'test-e2e', [ 'selenium_phantom_hub', 'protractor:development']);
 
     /**
     * A utility function to get all app JavaScript sources.
