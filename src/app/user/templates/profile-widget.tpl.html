@@ -1,0 +1,12 @@
+<div class="profile-container clearfix" >
+	<div class="inner-profile">
+	    <a class="sign-out" ui-sref="single-column.sign-out()" tooltip="Sign Out" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa fa-sign-out"></i></a>
+	    <p class="welcome-text">
+	        Welcome,
+	        <span>{{identity.name.first}} {{identity.name.last}}</span>
+	    </p>
+	</div>
+    <div class="profile-role">
+    	<h3>{{identity.role.name}}</h3>
+    </div>
+</div>

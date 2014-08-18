@@ -1,0 +1,25 @@
+<sidebar></sidebar>
+<div class="col-xs-12 col-sm-9 col-lg-10 content-wrap">
+    <div class="row header-wrap">
+        <div class="col-xs-12 col-sm-6 title-wrap">
+            <div ui-view="header"></div>
+
+            <!-- <h3 class="pull-left">
+                <span class="visible-xs">&nbsp;-&nbsp;XS</span>
+                <span class="visible-sm">&nbsp;-&nbsp;SM</span>
+                <span class="visible-md">&nbsp;-&nbsp;MD</span>
+                <span class="visible-lg">&nbsp;-&nbsp;LG</span>
+            </h3> -->
+
+            <!-- <button class="btn btn-default pull-right visible-xs btn-search">
+                <i class="fa fa-search"></i>
+            </button> -->
+        </div>
+        <div class="col-sm-6 hidden-xs search-wrap">
+            <search-widget></search-widget>
+        </div>
+    </div>
+    <div class="row content">
+        <div class="col-xs-12" ui-view="main"></div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<form class="form-signin" role="form" novalidate>
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <input type="username" class="form-control" placeholder="Username" data-ng-model="login.username" required autofocus />
+
+    <input type="password" class="form-control" placeholder="Password" data-ng-model="login.password" required />
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+
+    <div class="alert alert-danger" data-ng-show="error">
+        <p>{{error}}</p>
+    </div>
+    <notification-widget filter-by="notificationFilter"></notification-widget>
+
+    <button class="btn btn-lg btn-primary btn-block" data-ng-click="signin()">
+        Sign in
+    </button>
+</form>

@@ -1,0 +1,62 @@
+<notification-widget filter-by="notificationFilter" design="'bar'"></notification-widget>
+<div class="detail">
+    <form role="form">
+        <div class="form-group">
+            <label for="inputFirstName">First Name</label>
+            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" data-ng-model="user.name.first" />
+        </div>
+        <div class="form-group">
+            <label for="inputLastName">Last Name</label>
+            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" data-ng-model="user.name.last" />
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input type="text" class="form-control" id="inputEmail" placeholder="Email" data-ng-model="user.email" />
+        </div>
+        <div class="form-group">
+            <label for="inputUsername">Username</label>
+            <input type="text" class="form-control" id="inputUsername" placeholder="Username" data-ng-model="user.username" />
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password" data-ng-model="user.password" />
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h5 class="pull-left">Role <span data-ng-if="role.name"> - {{role.name|inflector:humanize}}</span></h5>
+                <div class="btn-group pull-right" dropdown>
+                    <button class="btn btn-default btn-sm dropdown-toggle">
+                        Predefined Roles
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li data-ng-repeat="role in roles">
+                            <a data-ng-click="selectRole(role)">{{role.name|inflector:humanize}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                Permissions
+            </div>
+        </div>
+        <div class="row permission-row" data-ng-repeat="resource in resources">
+            <div class="col-xs-4">
+                <p>{{resource.split('-').join(' ')|inflector:humanize}}</p>
+            </div>
+            <div class="col-xs-8">
+                <label><input type="checkbox" data-ng-model="user.permissions[resource].read">View</label>
+                <label><input type="checkbox" data-ng-model="user.permissions[resource].create">Create</label>
+                <label><input type="checkbox" data-ng-model="user.permissions[resource].update">Modify</label>
+                <label><input type="checkbox" data-ng-model="user.permissions[resource].delete">Delete</label>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="form-group form-actions clearfix">
+    <button class="btn btn-default pull-left">Cancel</button>
+    <button class="btn btn-primary pull-right" data-ng-click="create()">Create</button>
+</div>

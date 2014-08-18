@@ -94,17 +94,7 @@ module.exports = function( grunt ) {
                         expand: true
                     }
                 ]
-            }/*,
-            build_spec: {
-                files: [
-                    {
-                        src: [ '<%= test_files.spec %>' ],
-                        dest: '<%= build_dir %>',
-                        cwd: '.',
-                        expand: true
-                    }
-                ]
-            },*/
+            }
         },
         delta: {
             /**
@@ -165,7 +155,7 @@ module.exports = function( grunt ) {
 
             spec: {
                 files: [ '<%= test_files.spec %>' ],
-                tasks: [ /*'copy:build_spec',*/ 'karma:unit:run' ]
+                tasks: [ 'karma:unit:run' ]
             },
 
             karmaconfig: {
@@ -210,7 +200,8 @@ module.exports = function( grunt ) {
                 noarg: true,
                 sub: true,
                 boss: true,
-                eqnull: true
+                eqnull: true,
+                loopfunc: true
             }
         },
         less: {
@@ -323,7 +314,7 @@ module.exports = function( grunt ) {
             },
             production: {
                 src: '<%= app_files.templates %>',
-                dest: '<%= build_dir %>/src/templates.js',
+                dest: 'src/templates.js',
                 cwd: 'src/app',
                 options: {
                     standalone: true,
@@ -397,7 +388,7 @@ module.exports = function( grunt ) {
     // This is for Chrome Packaged Apps
     //grunt.registerTask( 'build-manifest', [ 'copy:build_manifest' ]);
     grunt.registerTask( 'compile', [
-        'clean', 'jshint:app', 'ngconstant:production', 'less:production', 'concat:compile_js', /*'uglify',*/ 'index:compile'
+        'clean', 'jshint:app', 'ngconstant:production', 'ngtemplates:production', 'less:production', 'concat:compile_js', /*'uglify',*/ 'index:compile'
     ]);
 
     grunt.registerTask( 'test', [ 'compile', 'karma:ci' ]);
