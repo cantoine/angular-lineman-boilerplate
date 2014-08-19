@@ -265,9 +265,11 @@ module.exports = function( grunt ) {
             },
             unit: {
                 browsers: [ 'Chrome' ],
+                reporters: [ 'progress', 'coverage', 'osx' ],
                 background: true
             },
             ci: {
+                reporters: [ 'progress', 'coverage' ],
                 autoWatch: false,
                 browsers: [ 'Chrome' ],
                 singleRun: true

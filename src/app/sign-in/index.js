@@ -3,8 +3,7 @@ angular.module( 'sign-in', [
     'ui.router',
     'single-column',
     'service.users',
-    'service.authentication',
-    'textAngular'
+    'service.authentication'
 ]).config(
     function config( $stateProvider) {
         $stateProvider.state({

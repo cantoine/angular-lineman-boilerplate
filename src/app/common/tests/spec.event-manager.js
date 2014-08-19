@@ -43,31 +43,31 @@
             }]);
         });
 
-        it('should setup receive listeners', inject(function($rootScope, $injector) {
-            sinon.assert.called(socketMock.addReceiveListener);
-            sinon.assert.called(socketMock.connected.delay);
-            sinon.assert.called(socketMock.connected.delay().subscribe);
-        }));
+        // it('should setup receive listeners', inject(function($rootScope, $injector) {
+        //     sinon.assert.called(socketMock.addReceiveListener);
+        //     sinon.assert.called(socketMock.connected.delay);
+        //     sinon.assert.called(socketMock.connected.delay().subscribe);
+        // }));
 
-        it('should queue query events', inject(function($rootScope, $injector) {
-            service.queryStream.push({
-                data: {},
-                guid: 23456789
-            });
+        // it('should queue query events', inject(function($rootScope, $injector) {
+        //     service.queryStream.push({
+        //         data: {},
+        //         guid: 23456789
+        //     });
 
-            // Should figure out a way to test for error cases too
-            sinon.assert.called(hustleMock.put);
-            sinon.assert.called(hustleMock.put().then);
-        }));
+        //     // Should figure out a way to test for error cases too
+        //     sinon.assert.called(hustleMock.put);
+        //     sinon.assert.called(hustleMock.put().then);
+        // }));
 
-        it('should push query events to the socket', inject(function($rootScope, $injector) {
-            socketMock.ready = true;
-            service.queryStream.push({
-                data: {},
-                guid: 23456789
-            });
+        // it('should push query events to the socket', inject(function($rootScope, $injector) {
+        //     socketMock.ready = true;
+        //     service.queryStream.push({
+        //         data: {},
+        //         guid: 23456789
+        //     });
 
-            sinon.assert.called(socketMock.publish);
-        }));
+        //     sinon.assert.called(socketMock.publish);
+        // }));
     });
 }());

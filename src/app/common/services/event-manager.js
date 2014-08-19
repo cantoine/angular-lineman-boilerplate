@@ -1,27 +1,27 @@
 angular.module( 'service.event-manager', [
     'model.message',
-    'service.hustle',
+    //'service.hustle',
     'service.socket'
 ]).config([
-    'hustleConfigProvider',
-    function(hustleConfigProvider) {
-        hustleConfigProvider.addQueue('server-events');
+    //'hustleConfigProvider',
+    function(/*hustleConfigProvider*/) {
+        //hustleConfigProvider.addQueue('server-events');
     }
 ]).factory('service.event-manager', [
     '$rootScope',
     '$q',
     'model.message',
-    'service.hustle',
+    //'service.hustle',
     'service.socket',
-    function($rootScope, $q, MessageModel, hustleService, socketService) {
+    function($rootScope, $q, MessageModel, /*hustleService,*/ socketService) {
         var eventManager = {
-                eventStream: new Bacon.Bus(),
-                queryStream: new Bacon.Bus()
+                eventStream: null,//new Bacon.Bus(),
+                queryStream: null,//new Bacon.Bus()
             };
 
-        eventManager.queryStream.onValue(handleQueryEvent);
+        //eventManager.queryStream.onValue(handleQueryEvent);
 
-        socketService.connected.delay(500).subscribe(
+        /*socketService.connected.delay(500).subscribe(
             function(connected) {
                 if (connected.value()) {
                     processQueue();
@@ -58,9 +58,9 @@ angular.module( 'service.event-manager', [
             } else {
                 addToQueue(event);
             }
-        }
+        }*/
 
-        function checkQueue() {
+        /*function checkQueue() {
             return hustleService.length('server-events');
         }
 
@@ -98,7 +98,7 @@ angular.module( 'service.event-manager', [
                     console.error(err);
                 }
             );
-        }
+        }*/
 
         return eventManager;
     }

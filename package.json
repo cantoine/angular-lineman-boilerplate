@@ -12,11 +12,10 @@
     "company": "SpinWeb"
   },
   "scripts": {
-    "test": "grunt test-application"
+    "test": "grunt test"
   },
   "dependencies": {},
   "devDependencies": {
-    "chai": "^1.9.1",
     "grunt": "latest",
     "grunt-angular-templates": "latest",
     "grunt-contrib-clean": "latest",
@@ -33,13 +32,12 @@
     "grunt-protractor-runner": "latest",
     "grunt-selenium-webdriver": "^0.2.421",
     "karma": "^0.12.21",
-    "karma-chai": "^0.1.0",
+    "karma-chai-sinon": "^0.1.3",
     "karma-chrome-launcher": "^0.1.4",
     "karma-coverage": "^0.2.6",
     "karma-mocha": "^0.1.7",
-    "mocha": "latest",
+    "karma-osx-reporter": "^0.1.0",
     "protractor": "latest",
-    "request": "latest",
-    "sinon": "latest"
+    "request": "latest"
   }
 }

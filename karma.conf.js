@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: [ 'mocha', 'chai' ],
+    frameworks: [ 'mocha', 'chai-sinon' ],
 
     // list of files to exclude
     exclude: [
@@ -27,7 +27,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: [ 'progress', 'coverage' ],
+    reporters: [],
 
 
     // web server port
