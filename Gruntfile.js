@@ -37,8 +37,8 @@ module.exports = function( grunt ) {
                 src: [
                     '<%= vendor_files.js %>',
                     'module.prefix',
-                    '<%=ngconstant.production.options.dest %>',
                     '<%= app_files.js %>',
+                    '<%=ngconstant.production.options.dest %>',
                     'module.suffix'
                 ],
                 dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
@@ -97,22 +97,12 @@ module.exports = function( grunt ) {
             }
         },
         delta: {
-            /**
-            * When the Gruntfile changes, we just want to lint it. In fact, when
-            * your Gruntfile changes, it will automatically be reloaded!
-            */
             gruntfile: {
+                cwd: '.',
                 files: [ 'Gruntfile.js', 'build.config.js' ],
-                tasks: [ 'jshint:gruntfile' ],
-                options: {
-                    livereload: false
-                }
+                tasks: [ 'jshint:gruntfile' ]
             },
 
-            /**
-            * When our JavaScript source files change, we want to run lint them and
-            * run our unit tests.
-            */
             jssrc: {
                 files: '<%= app_files.js %>',
                 tasks: [ 'jshint:app', 'copy:build_appjs', 'karma:unit:run' ]
@@ -123,18 +113,11 @@ module.exports = function( grunt ) {
                 tasks: ['copy:build_manifest']
             },
 
-            /**
-            * When assets are changed, copy them. Note that this will *not* copy new
-            * files, so this is probably not very useful.
-            */
             assets: {
                 files: '<%= app_files.assets %>',
                 tasks: [ 'copy:build_app_assets' ]
             },
 
-            /**
-            * When index.html changes, we need to compile it.
-            */
             html: {
                 files: [ '<%= app_files.html %>' ],
                 tasks: [ 'index:build' ]
@@ -145,9 +128,6 @@ module.exports = function( grunt ) {
                 tasks: [ 'ngtemplates', 'karma:unit:run' ]
             },
 
-            /**
-            * When the CSS files change, we need to compile and minify them.
-            */
             less: {
                 files: [ 'src/**/*.less' ],
                 tasks: [ 'less:development', 'karma:unit:run' ]
@@ -170,6 +150,7 @@ module.exports = function( grunt ) {
                     '<%= copy.build_app_assets.files[0].dest %>/*.js',
                     '<%= vendor_files.js %>',
                     '<%= build_dir %>/src/**/*.js',
+                    '<%= build_dir %>/assets/vendor-<%= pkg.version %>.css',
                     '<%= build_dir %>/assets/app-<%= pkg.version %>.css',
                     '<%= ngtemplates.dev.dest %>'
                 ]
@@ -382,15 +363,17 @@ module.exports = function( grunt ) {
 
     grunt.renameTask( 'watch', 'delta' );
     grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
-    grunt.registerTask( 'default', [ 'build', 'compile' ] );
+    grunt.registerTask( 'default', [ 'test' ] );
     grunt.registerTask( 'build', [
-        'clean', 'ngtemplates:dev', 'jshint', 'less:development', 'copy:build_app_assets', 'copy:build_appjs', 
-        'copy:build_vendor_assets', 'copy:build_vendorjs', 'index:build', 'ngconstant:dev' //, 'build-manifest'
+        'clean', 'ngtemplates:dev', 'jshint', 'less:development', 'copy:build_app_assets', 
+        'copy:build_appjs', 'copy:build_vendor_assets', 'copy:build_vendorjs', 
+        'index:build', 'ngconstant:dev' //, 'build-manifest'
     ]);
     // This is for Chrome Packaged Apps
     //grunt.registerTask( 'build-manifest', [ 'copy:build_manifest' ]);
     grunt.registerTask( 'compile', [
-        'clean', 'jshint:app', 'ngconstant:production', 'ngtemplates:production', 'less:production', 'concat:compile_js', /*'uglify',*/ 'index:compile'
+        'clean', 'jshint:app', 'ngconstant:production', 'ngtemplates:production',
+        'less:production', 'concat:compile_js', /*'uglify',*/ 'index:compile'
     ]);
 
     grunt.registerTask( 'test', [ 'compile', 'karma:ci' ]);

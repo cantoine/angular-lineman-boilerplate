@@ -4,9 +4,8 @@ module.exports = {
     app_files: {
         manifest:'src/manifest.json',
         js: [
-            'src/**/!(spec|e2e)*.js',
-            '!src/assets/**/*.js',
-            '!src/spec/helpers/*.js'
+            'src/**/!(mock|spec|e2e)*.js',
+            '!src/assets/**/*.js'
         ],
         jsunit: [
             'src/app/**/spec.*.js'
@@ -39,6 +38,7 @@ module.exports = {
     vendor_files: {
         js: [
             'vendor/angular/angular.js',
+            'vendor/angular-messages/angular-messages.js',
             'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
             'vendor/angular-ui-router/release/angular-ui-router.js',
             'vendor/angular-ui-utils/ui-utils.js'

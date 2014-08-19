@@ -9,7 +9,7 @@ angular.module( 'model.base', [
 
         return Base = (function() {
             function Base(upStream, downStream, data) {
-                if (!upStream || !downStream) {
+                /*if (!upStream || !downStream) {
                     throw new Error('Upstream and Downstream channels are required');
                 }
 
@@ -34,7 +34,7 @@ angular.module( 'model.base', [
                         // before pushing to parent.
                         return upStream.push(event);
                     }
-                );
+                );*/
             }
 
             Base.prototype.getValidation = function() {

@@ -15,7 +15,7 @@ angular.module( 'service.authentication', [
         identityPromise.then(
             function(ident) {
                 identity = createIdentity(ident);
-                socketService.addRequiredParam('token', identity.getToken());
+                //socketService.addRequiredParam('token', identity.getToken());
 
                 return identity;
             }
@@ -76,13 +76,14 @@ angular.module( 'service.authentication', [
             var self = this,
                 deferred = $q.defer();
 
-            chrome.storage.local.get('identity', function(result) {
+            /*chrome.storage.local.get('identity', function(result) {
                 if (result.identity) {
                     deferred.resolve(result.identity);
                 } else {
                     deferred.resolve({});
                 }
-            });
+            });*/
+            deferred.resolve({});
 
             return deferred.promise;
         }
@@ -98,11 +99,11 @@ angular.module( 'service.authentication', [
                 access_token: identity.access_token
             };
 
-            chrome.storage.local.set({ 'identity': identData }, function(identity) {
-                if (chrome.runtime.lastError) {
-                    console.error('Error: ', chrome.runtime.lastError);
-                }
-            });
+            // chrome.storage.local.set({ 'identity': identData }, function(identity) {
+            //     if (chrome.runtime.lastError) {
+            //         console.error('Error: ', chrome.runtime.lastError);
+            //     }
+            // });
         }
 
         function updateIdentity(changes) {
@@ -116,11 +117,11 @@ angular.module( 'service.authentication', [
                 access_token: identity.access_token
             };
 
-            chrome.storage.local.set({ 'identity': identData }, function(identity) {
-                if (chrome.runtime.lastError) {
-                    console.error('Error: ', chrome.runtime.lastError);
-                }
-            });
+            // chrome.storage.local.set({ 'identity': identData }, function(identity) {
+            //     if (chrome.runtime.lastError) {
+            //         console.error('Error: ', chrome.runtime.lastError);
+            //     }
+            // });
         }
 
         function deleteIdentity() {

@@ -16,7 +16,7 @@ angular.module( 'model.identity', [
                 Base.prototype.constructor.apply(this, arguments);
 
                 this.role = 'guest';
-                socketService.listenToRoom('users');
+                /*socketService.listenToRoom('users');
 
                 angular.extend(this, data);
 
@@ -45,7 +45,7 @@ angular.module( 'model.identity', [
                             )
                         );
                     })
-                );
+                );*/
             }
 
             Identity.prototype.isAuthenticated = function() {

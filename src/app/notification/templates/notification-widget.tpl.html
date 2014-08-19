@@ -1,0 +1,17 @@
+<div class="notification-wrapper" data-ng-class="{ 'notification-bar': design == 'bar' }">
+    <span class="info-icon" data-ng-if="design == 'bar'">i</span>
+    <div class="notification clearfix" data-ng-repeat="notification in notifications">
+        <div class="message">
+            <span class="glyphicon glyphicon-info-sign" data-ng-if="notification.icon == 'info'"></span>
+            <span class="glyphicon glyphicon-warning-sign" data-ng-if="notification.icon == 'error'"></span>
+            {{notification.message}}
+        </div>
+        <div class="spinner" data-ng-if="notification.spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </div>
+</div>

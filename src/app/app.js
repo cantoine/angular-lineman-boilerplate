@@ -9,6 +9,7 @@ angular.module( 'boilerplate', [
     'ui.router',
     'ui.validate',
     'ui.route',
+    'service.notifications',
     'sign-in',
     'sign-out',
     'dashboard',

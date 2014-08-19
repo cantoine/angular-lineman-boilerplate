@@ -13,14 +13,13 @@ module.exports = function(config) {
     frameworks: [ 'mocha', 'chai-sinon' ],
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        'src/**/!(spec|e2e)*.js': [ 'coverage' ]
+        'src/**/!(mock|spec|e2e)*.js': [ 'coverage' ]
     },
 
 

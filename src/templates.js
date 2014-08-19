@@ -31,6 +31,11 @@ angular.module('templates', []).run(['$templateCache', function($templateCache) 
   );
 
 
+  $templateCache.put('notification/templates/notification-widget.tpl.html',
+    "<div class=\"notification-wrapper\" data-ng-class=\"{ 'notification-bar': design == 'bar' }\"><span class=\"info-icon\" data-ng-if=\"design == 'bar'\">i</span><div class=\"notification clearfix\" data-ng-repeat=\"notification in notifications\"><div class=\"message\"><span class=\"glyphicon glyphicon-info-sign\" data-ng-if=\"notification.icon == 'info'\"></span> <span class=\"glyphicon glyphicon-warning-sign\" data-ng-if=\"notification.icon == 'error'\"></span> {{notification.message}}</div><div class=\"spinner\" data-ng-if=\"notification.spinner\"><div class=\"rect1\"></div><div class=\"rect2\"></div><div class=\"rect3\"></div><div class=\"rect4\"></div><div class=\"rect5\"></div></div></div></div>"
+  );
+
+
   $templateCache.put('sign-in/templates/sign-in.tpl.html',
     "<form class=\"form-signin\" role=\"form\" novalidate><h2 class=\"form-signin-heading\">Please sign in</h2><input type=\"username\" class=\"form-control\" placeholder=\"Username\" data-ng-model=\"login.username\" required autofocus> <input type=\"password\" class=\"form-control\" placeholder=\"Password\" data-ng-model=\"login.password\" required><div class=\"checkbox\"><label><input type=\"checkbox\" value=\"remember-me\"> Remember me</label></div><div class=\"alert alert-danger\" data-ng-show=\"error\"><p>{{error}}</p></div><notification-widget filter-by=\"notificationFilter\"></notification-widget><button class=\"btn btn-lg btn-primary btn-block\" data-ng-click=\"signin()\">Sign in</button></form>"
   );
